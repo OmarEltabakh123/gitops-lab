@@ -50,13 +50,13 @@ spec:
             timeoutSeconds: 2
             failureThreshold: 6
 
-         livenessProbe:
-           tcpSocket:
-           port: 3306
-           initialDelaySeconds: 30
-           periodSeconds: 10
-           timeoutSeconds: 2
-           failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+            port: 3306
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
       volumes:
         - name: mysql-data
           emptyDir: {}
