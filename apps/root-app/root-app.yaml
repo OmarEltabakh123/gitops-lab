@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/OmarEltabakh123/gitops-lab.git
     targetRevision: main
-    path: apps/childern
+    path: apps/children
 
   destination:
     server: https://kubernetes.default.svc
