@@ -24,8 +24,7 @@ spec:
             echo "Waiting for MySQL..."
             sleep 2
           done
-        containers:
-
+      containers:
         - name: todo
           image: omareltabakh/todo-app:v1.1
           ports:
