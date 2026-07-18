@@ -57,6 +57,6 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 2
             failureThreshold: 3
-        volumes:
+      volumes:
         - name: mysql-data
           emptyDir: {}
