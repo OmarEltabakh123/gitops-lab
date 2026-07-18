@@ -44,19 +44,19 @@ spec:
               mountPath: /var/lib/mysql
           readinessProbe:
             tcpSocket:
-            port: 3306
+              port: 3306
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 6
-
+          
           livenessProbe:
             tcpSocket:
-            port: 3306
+              port: 3306
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 2
             failureThreshold: 3
-      volumes:
+        volumes:
         - name: mysql-data
           emptyDir: {}
