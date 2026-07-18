@@ -1,0 +1,42 @@
+mysql:
+  image:
+    repository: mysql
+    tag: "8"
+    pullPolicy: IfNotPresent
+
+  service:
+    port: 3306
+
+
+  database: todoapp
+  user: todouser
+########################
+todo:
+  image: omareltabakh/todo-app:v1.1
+  replicaCount: 1
+
+  service:
+    type: NodePort
+    port: 8000
+
+##############################
+notifier:
+  image: omareltabakh/notifier:v1.0
+  replicaCount: 1
+
+########################
+config:
+  mysqlHost: mysql
+  mysqlDatabase: todoapp
+  mysqlUser: todouser
+  dbPort: "3306"
+  checkInterval: "2m"
+  ###########################
+secret:
+  mysqlPassword: "todopass"
+  mysqlRootPassword: "password"
+  smtpHost: smtp.gmail.com
+  smtpPort: "587"
+  smtpUser: appt0871@gmail.com
+  smtpPass: hphlaokthsaxsfqm
+  emailTo: appt0871@gmail.com

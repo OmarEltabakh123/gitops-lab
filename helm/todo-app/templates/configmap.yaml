@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+data:
+  MYSQL_DATABASE: {{ .Values.config.mysqlDatabase | quote }}
+  MYSQL_USER: {{ .Values.config.mysqlUser | quote }}
+  MYSQL_HOST: {{ .Values.config.mysqlHost | quote }}
+  DB_PORT: {{ .Values.config.dbPort | quote }}
+  CHECK_INTERVAL: {{ .Values.config.checkInterval | quote }}

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  CHECK_INTERVAL: "10m"
+  MYSQL_DATABASE: todoapp
+  MYSQL_HOST: mysql
+  MYSQL_USER: todouser
+  DB_PORT: "3306"

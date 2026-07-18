@@ -1,0 +1,8 @@
+secret:
+  mysqlPassword: todopass
+  mysqlRootPassword: rootpass
+  smtpHost: smtp.gmail.com
+  smtpPort: "587"
+  smtpUser: example@gmail.com
+  smtpPass: xxxxxxxxxxxxx
+  emailTo: me@gmail.com
