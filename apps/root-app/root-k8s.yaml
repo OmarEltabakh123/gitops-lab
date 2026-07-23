@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-app
+  name: root-k8s
   namespace: argocd
 spec:
   project: default
@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/OmarEltabakh123/gitops-lab.git
     targetRevision: main
-    path: apps/children
+    path: apps/k8s
 
   destination:
     server: https://kubernetes.default.svc
