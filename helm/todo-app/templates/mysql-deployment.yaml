@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-mysql
+
 spec:
   replicas: {{ .Values.mysql.replicaCount }}
+
   selector:
     matchLabels:
       app: mysql
@@ -18,6 +20,7 @@ spec:
         - name: mysql
           image: "{{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag }}"
           imagePullPolicy: {{ .Values.mysql.image.pullPolicy }}
+
           env:
             - name: MYSQL_DATABASE
               valueFrom:
@@ -45,6 +48,28 @@ spec:
 
           ports:
             - containerPort: {{ .Values.mysql.service.port }}
+
+          startupProbe:
+            tcpSocket:
+              port: {{ .Values.mysql.service.port }}
+            periodSeconds: 5
+            failureThreshold: 30
+
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.mysql.service.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.mysql.service.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
 
           volumeMounts:
             - name: mysql-data
