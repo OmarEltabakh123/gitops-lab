@@ -53,3 +53,24 @@ spec:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-config
                   key: DB_PORT
+
+          startupProbe:
+            tcpSocket:
+              port: {{ .Values.todo.service.port }}
+            periodSeconds: 5
+            failureThreshold: 30
+
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.todo.service.port }}
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.todo.service.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
