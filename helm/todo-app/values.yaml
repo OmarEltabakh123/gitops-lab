@@ -33,12 +33,12 @@ config:
   checkInterval: "2m"
   ###########################
 secret:
-  mysqlPassword: CHANGE_ME
-  mysqlRootPassword: CHANGE_ME
+  mysqlPassword: todopass
+  mysqlRootPassword: password
 
   smtpHost: smtp.gmail.com
   smtpPort: "587"
 
-  smtpUser: your-email@gmail.com
-  smtpPass: your-app-password
-  emailTo: recipient@example.com
+  smtpUser: appt0871@gmail.com
+  smtpPass: hphlaokthsaxsfqm
+  emailTo: appt0871@gmail.com
