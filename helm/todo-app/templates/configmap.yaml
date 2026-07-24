@@ -5,6 +5,6 @@ metadata:
 data:
   MYSQL_DATABASE: {{ .Values.config.mysqlDatabase | quote }}
   MYSQL_USER: {{ .Values.config.mysqlUser | quote }}
-  MYSQL_HOST: {{ .Values.config.mysqlHost | quote }}
+  MYSQL_HOST: {{ include "todo-app.mysqlServiceName" . | quote }}
   DB_PORT: {{ .Values.config.dbPort | quote }}
   CHECK_INTERVAL: {{ .Values.config.checkInterval | quote }}
