@@ -39,8 +39,7 @@ spec:
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-secret
-                  key: MYSQL_PASSWORD
+                  name: app-secrets
 
             - name: MYSQL_HOST
               valueFrom:

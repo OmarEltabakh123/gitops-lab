@@ -31,14 +31,4 @@ config:
   mysqlUser: todouser
   dbPort: "3306"
   checkInterval: "2m"
-  ###########################
-secret:
-  mysqlPassword: todopass
-  mysqlRootPassword: password
 
-  smtpHost: smtp.gmail.com
-  smtpPort: "587"
-
-  smtpUser: appt0871@gmail.com
-  smtpPass: hphlaokthsaxsfqm
-  emailTo: appt0871@gmail.com

@@ -37,14 +37,13 @@ spec:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-secret
-                  key: MYSQL_ROOT_PASSWORD
+                  name: app-secrets
 
+                  
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-secret
-                  key: MYSQL_PASSWORD
+                  name: app-secrets
 
           ports:
             - containerPort: {{ .Values.mysql.service.port }}
