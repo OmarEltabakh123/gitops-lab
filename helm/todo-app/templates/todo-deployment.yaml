@@ -40,6 +40,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
+                  key: MYSQL_PASSWORD
 
             - name: MYSQL_HOST
               valueFrom:

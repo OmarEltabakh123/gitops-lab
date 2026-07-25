@@ -28,22 +28,28 @@ spec:
                   key: CHECK_INTERVAL
 
             - name: SMTP_HOST
+              valueFrom:
               secretKeyRef:
                   name: app-secrets
+                  key: SMTP_HOST
 
             - name: SMTP_PORT
               valueFrom:
-                ssecretKeyRef:
+                secretKeyRef:
                   name: app-secrets
+                  key: SMTP_PORT
 
             - name: SMTP_USER
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
+                  key: SMTP_USER
             - name: SMTP_PASS
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
+                  key: SMTP_PASS
+
             - name: MYSQL_HOST
               valueFrom:
                 configMapKeyRef:
@@ -64,9 +70,9 @@ spec:
 
             - name: MYSQL_PASSWORD
               valueFrom:
-                ssecretKeyRef:
+                secretKeyRef:
                   name: app-secrets
-
+                  key: MYSQL_PASSWORD
             - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
@@ -77,3 +83,4 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
+                  key: EMAIL_TO

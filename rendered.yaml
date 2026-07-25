@@ -1,0 +1,288 @@
+---
+# Source: todo-app/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-config
+data:
+  MYSQL_DATABASE: "todoapp"
+  MYSQL_USER: "todouser"
+  MYSQL_HOST: "test-mysql"
+  DB_PORT: "3306"
+  CHECK_INTERVAL: "2m"
+---
+# Source: todo-app/templates/mysql-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-mysql
+
+spec:
+  selector:
+    app: mysql
+
+  ports:
+    - port: 3306
+      targetPort: 3306
+---
+# Source: todo-app/templates/todo-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-todo
+
+spec:
+  selector:
+    app: todo
+
+  ports:
+    - port: 8000
+      targetPort: 8000
+
+  type: NodePort
+---
+# Source: todo-app/templates/mysql-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-mysql
+
+spec:
+  replicas: 
+
+  selector:
+    matchLabels:
+      app: mysql
+
+  template:
+    metadata:
+      labels:
+        app: mysql
+
+    spec:
+      containers:
+        - name: mysql
+          image: "mysql:8"
+          imagePullPolicy: IfNotPresent
+
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: MYSQL_DATABASE
+
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: MYSQL_USER
+
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: MYSQL_ROOT_PASSWORD
+
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: MYSQL_PASSWORD
+          ports:
+            - containerPort: 3306
+
+          startupProbe:
+            tcpSocket:
+              port: 3306
+            periodSeconds: 5
+            failureThreshold: 30
+
+          readinessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+          livenessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+
+      volumes:
+        - name: mysql-data
+          emptyDir: {}
+---
+# Source: todo-app/templates/notifier-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-notifier
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: notifier
+
+  template:
+    metadata:
+      labels:
+        app: notifier
+
+    spec:
+      containers:
+        - name: notifier
+          image: omareltabakh/notifier:v1.0
+
+          env:
+            - name: CHECK_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: CHECK_INTERVAL
+
+            - name: SMTP_HOST
+              secretKeyRef:
+                  name: app-secrets
+                  key: SMTP_HOST
+
+            - name: SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: SMTP_PORT
+
+            - name: SMTP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: SMTP_USER
+            - name: SMTP_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: SMTP_PASS
+
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: MYSQL_HOST
+
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: MYSQL_USER
+
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: MYSQL_DATABASE
+
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: MYSQL_PASSWORD
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: DB_PORT
+
+            - name: EMAIL_TO
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: EMAIL_TO
+---
+# Source: todo-app/templates/todo-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-todo
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: todo
+
+  template:
+    metadata:
+      labels:
+        app: todo
+
+    spec:
+      containers:
+        - name: todo
+          image: omareltabakh/todo-app:v1.1
+
+          ports:
+            - containerPort: 8000
+
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: MYSQL_DATABASE
+
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: MYSQL_USER
+
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: MYSQL_PASSWORD
+
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: MYSQL_HOST
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: test-config
+                  key: DB_PORT
+
+          startupProbe:
+            tcpSocket:
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 30
+
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
