@@ -29,7 +29,7 @@ spec:
 
             - name: SMTP_HOST
               valueFrom:
-              secretKeyRef:
+                secretKeyRef:
                   name: app-secrets
                   key: SMTP_HOST
 
